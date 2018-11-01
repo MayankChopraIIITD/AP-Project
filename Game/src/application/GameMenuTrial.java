@@ -1,6 +1,9 @@
+package application;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+
 
 import java.io.*;
 import javafx.animation.FadeTransition;
@@ -54,7 +57,7 @@ class MenuButton extends StackPane{
 	}	
 }
 
-public class GameMenuTrial extends Application {
+public class GameMenuTrial extends Application  {
 	
 	private Pane root;
 	private Scene scene_main, scene_instructions,scene_leaderboard,scene_newgame;
@@ -75,7 +78,7 @@ public class GameMenuTrial extends Application {
 		Image img = null;
 		InputStream in = null;
 		try{
-			in = Files.newInputStream(Paths.get("res/images/snake2.jpg"));	
+			in = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\cartoon_green_snake-1920x1200.jpg"));	
 			img = new Image(in);
 		}finally{	
 			in.close();
@@ -120,8 +123,12 @@ public class GameMenuTrial extends Application {
 		Pane pane_game = new Pane();
 		Snake snake = new Snake();
 		ArrayList<Sprite> snak = snake.getSnake();
+		Block g=new Block();
+		ArrayList<Rectangle> block_list=g.getlist();
+		g.drawblocklist(pane_game,block_list);
 		btn2.setOnMouseClicked(event -> {
-			Scene scene = new Scene(snake.createContent());
+			Scene scene = new Scene(snake.createContent(pane_game));
+			g.moveblocks(block_list,pane_game);
 			scene.setOnKeyPressed(e -> {
 				switch (e.getCode()){
 					case A:

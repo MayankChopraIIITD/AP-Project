@@ -1,3 +1,5 @@
+package application;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -8,13 +10,35 @@ import javafx.scene.paint.Color;
 import javafx.geometry.Point2D;
 import java.util.*;
 
+class Sprite extends Circle {
+	boolean dead = false;
+	final String type;
+	Sprite(int x,int y,int r, String type,Color color){
+		super(r,color);
+		this.type = type;
+		setTranslateX(x);
+		setTranslateY(y);
+	}
+	void moveLeft(){
+		setTranslateX(getTranslateX()-15);			
+	}
+	void moveRight(){
+		setTranslateX(getTranslateX()+15);
+	}
+	
+}
+
+
+
+
+
 public class Snake extends Application{
 	private Pane root = new Pane();
 	private Sprite player;
 	private ArrayList<Sprite> snake = new ArrayList<>();
 
 	
-	private Parent createContent(){
+	public Pane createContent(Pane root){
 		root.setPrefSize(600,800);
 		int x=15;
 		for(int i=0;i<5;i++){
@@ -30,7 +54,7 @@ public class Snake extends Application{
 	
 	@Override
 	public void start(Stage stage) throws Exception{
-		Scene scene = new Scene(createContent());
+		Scene scene = new Scene(createContent(root));
 		scene.setOnKeyPressed(e -> {
 			switch (e.getCode()){
 				case A:
@@ -52,25 +76,6 @@ public class Snake extends Application{
 	
 	public ArrayList<Sprite> getSnake(){
 		return snake;
-	}
-	
-	
-	private static class Sprite extends Circle {
-		boolean dead = false;
-		final String type;
-		Sprite(int x,int y,int r, String type,Color color){
-			super(r,color);
-			this.type = type;
-			setTranslateX(x);
-			setTranslateY(y);
-		}
-		void moveLeft(){
-			setTranslateX(getTranslateX()-15);			
-		}
-		void moveRight(){
-			setTranslateX(getTranslateX()+15);
-		}
-		
 	}
 	
 	public static void main(String[] args) {
