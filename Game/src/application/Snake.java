@@ -39,7 +39,6 @@ public class Snake extends Application{
 
 	
 	public Pane createContent(Pane root){
-		root.setPrefSize(600,800);
 		int x=15;
 		for(int i=0;i<5;i++){
 			player = new Sprite(300,600+(2*x),15,"snake",Color.BLUE);

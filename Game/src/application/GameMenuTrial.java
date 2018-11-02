@@ -1,3 +1,5 @@
+package application;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -64,6 +67,7 @@ public class GameMenuTrial extends Application  {
 	
 	@Override
 	public void start(Stage stage) throws Exception{
+		stage.initStyle(StageStyle.UNDECORATED);
 		root.setPrefSize(800,800);
 		
 		// For MAIN MENU
@@ -75,7 +79,7 @@ public class GameMenuTrial extends Application  {
 		Image img = null;
 		InputStream in = null;
 		try{
-			in = Files.newInputStream(Paths.get("res/images/snake2.jpg"));	
+			in = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\cartoon_green_snake-1920x1200.jpg"));	
 			img = new Image(in);
 		}finally{	
 			in.close();
@@ -183,9 +187,9 @@ public class GameMenuTrial extends Application  {
 		Image img_shield = null; Image img_magnet = null; Image img_destroy = null;
 		InputStream in_shield = null; InputStream in_magnet = null; InputStream in_destroy = null; 
 		try{
-			in_shield = Files.newInputStream(Paths.get("res/images/shield.jpg"));
-			in_magnet  = Files.newInputStream(Paths.get("res/images/Magnet.png"));
-			in_destroy = Files.newInputStream(Paths.get("res/images/destroy.jpg"));
+			in_shield = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\shield.jpg"));
+			in_magnet  = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\Magnet.png"));
+			in_destroy = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\destroy.jpg"));
 			img_shield = new Image(in_shield); img_magnet = new Image(in_magnet); img_destroy = new Image(in_destroy);
 		}finally{	
 			in_shield.close();
