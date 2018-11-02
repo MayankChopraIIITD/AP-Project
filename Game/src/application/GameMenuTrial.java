@@ -128,6 +128,7 @@ public class GameMenuTrial extends Application  {
 		g.drawblocklist(pane_game,block_list);
 		btn2.setOnMouseClicked(event -> {
 			Scene scene = new Scene(snake.createContent(pane_game));
+			scene.setFill(Color.WHITE);
 			g.moveblocks(block_list,pane_game);
 			scene.setOnKeyPressed(e -> {
 				switch (e.getCode()){

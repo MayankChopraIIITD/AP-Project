@@ -13,21 +13,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 
-public class Ball extends Application{
+public class Ball {
 	ArrayList<Circle> ball_list1=new ArrayList<Circle>();
 	ArrayList<Circle> ball_list2=new ArrayList<Circle>();
 	ArrayList<Circle> ball_list3=new ArrayList<Circle>();
 	Pane pane=new Pane();
 	private int numballs=0;
-	@Override
-	public void start(Stage stage){
-		createball(pane);
-		Scene scene=new Scene(pane,600,800);
-		stage.setScene(scene);
-		stage.show();
-		getBallAnimation();
-		
-	}
 	public ParallelTransition getBallAnimation(){
 		ParallelTransition a=new ParallelTransition();
 		if(numballs==1){
@@ -110,8 +101,4 @@ public class Ball extends Application{
 			numballs=3;
 		}
 	}
-	public static void main(String[] args){
-		launch(args);
-	}
-
 }

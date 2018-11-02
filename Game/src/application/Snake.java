@@ -27,12 +27,7 @@ class Sprite extends Circle {
 	}
 	
 }
-
-
-
-
-
-public class Snake extends Application{
+public class Snake {
 	private Pane root = new Pane();
 	private Sprite player;
 	private ArrayList<Sprite> snake = new ArrayList<>();
@@ -47,39 +42,8 @@ public class Snake extends Application{
 			snake.add(player);
 		}
 		return root;
-	}
-	
-	
-	
-	@Override
-	public void start(Stage stage) throws Exception{
-		Scene scene = new Scene(createContent(root));
-		scene.setOnKeyPressed(e -> {
-			switch (e.getCode()){
-				case A:
-					for(int i=0;i<snake.size();i++){
-						snake.get(i).moveLeft();
-					}
-					break;
-				case D:
-					for(int i=0;i<snake.size();i++){
-						snake.get(i).moveRight();
-					}
-					break;
-					
-			}
-		});
-		stage.setScene(scene);	
-		stage.show();
-	}
-	
+	}	
 	public ArrayList<Sprite> getSnake(){
 		return snake;
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		launch(args);
-	}
-
 }

@@ -13,23 +13,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class Block extends Application {
+public class Block {
 	private ArrayList<Rectangle> block_list=new ArrayList<Rectangle>(); 
 	Ball balls=new Ball();
 	Shield shield=new Shield();
 	public ArrayList<Rectangle> getlist(){
 		return block_list;
-	}
-	
-	@Override
-	public void start(Stage stage) throws Exception{
-		stage.initStyle(StageStyle.UNDECORATED);
-		Pane pane = new Pane();
-		drawblocklist(pane,this.block_list);
-		Scene scene = new Scene(pane,600,800);
-		stage.setScene(scene);
-		moveblocks(this.block_list,pane);
-		stage.show();
 	}
 	public void moveblocks(ArrayList<Rectangle> blocklist,Pane pane) {
 		ParallelTransition main=new ParallelTransition();
@@ -72,15 +61,5 @@ public class Block extends Application {
 			blocklist.add(i,rect);
 			root.getChildren().add(rect);
 		}
-		
-		//System.out.println(this.block_list.size());
 	}
-	
-	
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		launch(args);
-	}
-
 }
