@@ -121,6 +121,18 @@ public class GameMenuTrial extends Application  {
 		// NEW GAME
 		
 		Pane pane_game = new Pane();
+		Image img2 = null;
+		InputStream in2 = null;
+		try{
+			in2 = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\black.jpg"));	
+			img2 = new Image(in2);
+		}finally{	
+			in2.close();
+		}
+		ImageView vie = new ImageView(img2);
+		vie.setFitWidth(600);
+		vie.setFitHeight(800);
+		pane_game.getChildren().add(vie);
 		Snake snake = new Snake();
 		ArrayList<Sprite> snak = snake.getSnake();
 		Block g=new Block();
@@ -128,7 +140,7 @@ public class GameMenuTrial extends Application  {
 		g.drawblocklist(pane_game,block_list);
 		btn2.setOnMouseClicked(event -> {
 			Scene scene = new Scene(snake.createContent(pane_game));
-			scene.setFill(Color.WHITE);
+			scene.setFill(Color.BLACK);
 			g.moveblocks(block_list,pane_game);
 			scene.setOnKeyPressed(e -> {
 				switch (e.getCode()){

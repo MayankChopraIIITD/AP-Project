@@ -24,7 +24,7 @@ public class Block {
 		ParallelTransition main=new ParallelTransition();
 		main.getChildren().add(balls.getBallAnimation());
 		for(int i=0;i<blocklist.size();i++) {
-			TranslateTransition a=new TranslateTransition(Duration.seconds(3.5),blocklist.get(i));
+			TranslateTransition a=new TranslateTransition(Duration.seconds(4),blocklist.get(i));
 			a.setByY(1740);
 			a.setCycleCount(1);
 			main.getChildren().add(a);
