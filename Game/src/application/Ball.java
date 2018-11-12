@@ -1,4 +1,3 @@
-package application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.shape.Circle;
@@ -13,92 +12,75 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 
-public class Ball {
-	ArrayList<Circle> ball_list1=new ArrayList<Circle>();
-	ArrayList<Circle> ball_list2=new ArrayList<Circle>();
-	ArrayList<Circle> ball_list3=new ArrayList<Circle>();
-	Pane pane=new Pane();
-	private int numballs=0;
-	public ParallelTransition getBallAnimation(){
+public class Ball extends token{
+	private ArrayList<Circle> ball_list=new ArrayList<Circle>();
+	private Pane pane=new Pane();
+	private ArrayList<Integer> check_x = new ArrayList<>();
+	private ArrayList<Integer> check_y = new ArrayList<>();
+	
+	public void getBallAnimation(ArrayList<Circle> list,Pane pane){
 		ParallelTransition a=new ParallelTransition();
-		if(numballs==1){
-			for(int i=0;i<numballs;i++){
-				TranslateTransition t=new TranslateTransition(Duration.seconds(3.5),this.ball_list1.get(i));
-				t.setByY(1900);
-				t.setCycleCount(1);
-				a.getChildren().add(t);
-			}
-		}else if(numballs==2){
-			for(int i=0;i<numballs;i++){
-				TranslateTransition t=new TranslateTransition(Duration.seconds(3.5),this.ball_list2.get(i));
-				t.setByY(1900);
-				t.setCycleCount(1);
-				a.getChildren().add(t);
-			}
-		}else{
-			for(int i=0;i<numballs;i++){
-				TranslateTransition t=new TranslateTransition(Duration.seconds(3.5),this.ball_list3.get(i));
-				t.setByY(1900);
-				t.setCycleCount(1);
-				a.getChildren().add(t);
-			}
+		for(int i=0;i<list.size();i++){
+			TranslateTransition t=new TranslateTransition(Duration.seconds(7),list.get(i));
+			t.setByY(1750);
+			t.setCycleCount(1);
+			a.getChildren().add(t);
 		}
-		return a;
+		a.play();
+		a.setOnFinished(event ->{
+			this.createball(pane,this.ball_list);
+			this.getBallAnimation(this.ball_list, pane);
+		});
 		
 	}
-	public void createball(Pane pane){
+	public ArrayList<Circle> getballs(){
+		return ball_list;
+	}
+	public void createball(Pane pane,ArrayList<Circle> list){
 		Random num=new Random();
-		int sum_x = 300;
-		ArrayList<Integer> arr_x = new ArrayList<>();
-		for(int i=-19;i<=19;i++){
-			sum_x = 300+(i*15);
-			arr_x.add(sum_x);
-		}
-		Random y = new Random();
-		int y_cor = -700+num.nextInt(300);
-		Collections.shuffle(arr_x);
-		int number=num.nextInt(3)+1;
-		if(number==1){
-			Circle ball = new Circle(arr_x.get(arr_x.size()/2),y_cor,15);
+		int x_cor=0;
+		int y_cor=0;
+		int number=num.nextInt(4)+1;
+		for(int i=0;i<number;i++){
+			x_cor = this.get_random_x_coordinate();
+			y_cor = this.get_random_y_coordinate();
+			check_x.add(x_cor);
+			check_y.add(y_cor);
+			if(search_pointlist(x_cor,y_cor)!=0){
+				check_x.remove(search_pointlist(x_cor,y_cor));
+				check_y.remove(search_pointlist(x_cor,y_cor));
+			}
+			Circle ball = new Circle(x_cor,y_cor,15);
 			ball.setFill(Color.YELLOW);
 			ball.setStroke(Color.BLACK);
-			ball_list1.add(0,ball);
+			list.add(i,ball);
 			pane.getChildren().add(ball);
-			numballs=1;
-		}
-		else if(number == 2){
-			Circle ball1  = new Circle(arr_x.get(arr_x.size()/2),y_cor,15);
-			y_cor = -700+num.nextInt(300);
-			Collections.shuffle(arr_x);
-			Circle ball2  = new Circle(arr_x.get(arr_x.size()/2),y_cor,15);
-			ball1.setFill(Color.YELLOW);
-			ball2.setFill(Color.YELLOW);
-			ball1.setStroke(Color.BLACK);
-			ball2.setStroke(Color.BLACK);
-			ball_list2.add(0,ball1);
-			ball_list2.add(1,ball2);
-			pane.getChildren().addAll(ball1,ball2);
-			numballs=2;
-		}
-		else{
-			Circle ball1  = new Circle(arr_x.get(arr_x.size()/2),y_cor,15);
-			y_cor = -700+num.nextInt(300);
-			Collections.shuffle(arr_x);
-			Circle ball2  = new Circle(arr_x.get(arr_x.size()/2),y_cor,15);
-			y_cor = -700+num.nextInt(300);
-			Collections.shuffle(arr_x);
-			Circle ball3 = new Circle(arr_x.get(arr_x.size()/2),y_cor,15);
-			ball1.setFill(Color.YELLOW);
-			ball2.setFill(Color.YELLOW);
-			ball3.setFill(Color.YELLOW);
-			ball1.setStroke(Color.BLACK);
-			ball2.setStroke(Color.BLACK);
-			ball3.setStroke(Color.BLACK);
-			ball_list3.add(0,ball1);
-			ball_list3.add(1,ball2);
-			ball_list3.add(2,ball3);
-			pane.getChildren().addAll(ball1,ball2,ball3);
-			numballs=3;
 		}
 	}
+	public int search_pointlist(int x, int y){
+		int index=0;
+		boolean var=true;
+		int n = check_x.size();
+		double distance = 0;
+		for(int i=0;i<n-1;i++){
+			for(int j=i+1;j<n;j++){
+				double x1 = (double)(check_x.get(i));
+				double x2 = (double)(check_x.get(j));
+				double y1 = (double)(check_x.get(i));
+				double y2 = (double)(check_x.get(j));
+				distance = Math.sqrt(Math.pow((x1-x2),2) + Math.pow((y1-y2),2));
+				if(distance<=32){
+					var=true;
+					index=j;
+					break;
+				}
+			}
+			if(var==true){
+				break;
+			}
+		}
+		return index;
+		
+	}
+	
 }
