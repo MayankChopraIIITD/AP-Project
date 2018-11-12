@@ -1,5 +1,3 @@
-package application;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,10 +10,12 @@ import javafx.scene.Scene;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -26,7 +26,8 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 class MenuButton extends StackPane{
 	private Text text;
 	
@@ -79,7 +80,7 @@ public class GameMenuTrial extends Application  {
 		Image img = null;
 		InputStream in = null;
 		try{
-			in = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\cartoon_green_snake-1920x1200.jpg"));	
+			in = Files.newInputStream(Paths.get("res/images/snake2.jpg"));	
 			img = new Image(in);
 		}finally{	
 			in.close();
@@ -103,6 +104,8 @@ public class GameMenuTrial extends Application  {
 		MenuButton btn4 = new MenuButton("HELP");
 		MenuButton btn5 = new MenuButton("EXIT");
 		
+		btn1.setDisable(true);
+		
 		btn3.setOnMouseClicked(event -> stage.setScene(scene_leaderboard));
 		
 		btn4.setOnMouseClicked(event -> stage.setScene(scene_instructions));	
@@ -124,7 +127,7 @@ public class GameMenuTrial extends Application  {
 		Image img2 = null;
 		InputStream in2 = null;
 		try{
-			in2 = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\black.jpg"));	
+			in2 = Files.newInputStream(Paths.get("res/images/black.jpg"));	
 			img2 = new Image(in2);
 		}finally{	
 			in2.close();
@@ -136,13 +139,17 @@ public class GameMenuTrial extends Application  {
 		Snake snake = new Snake();
 		ArrayList<Sprite> snak = snake.getSnake();
 		Block g=new Block();
+		Ball  balls = new Ball();
+		ArrayList<Circle> ball_list = balls.getballs();
 		ArrayList<Rectangle> block_list=g.getlist();
 		g.drawblocklist(pane_game,block_list);
+		balls.createball(pane_game,ball_list);
+
 		btn2.setOnMouseClicked(event -> {
-			Scene scene = new Scene(snake.createContent(pane_game));
-			scene.setFill(Color.BLACK);
+			scene_newgame = new Scene(snake.createContent(pane_game));
 			g.moveblocks(block_list,pane_game);
-			scene.setOnKeyPressed(e -> {
+			balls.getBallAnimation(ball_list, pane_game);
+			scene_newgame.setOnKeyPressed(e -> {
 				switch (e.getCode()){
 					case A:
 						for(int i=0;i<snak.size();i++){
@@ -156,10 +163,10 @@ public class GameMenuTrial extends Application  {
 						break;				
 				}
 			});
-			stage.setScene(scene);	
+			stage.setScene(scene_newgame);	
 			stage.show();
 		});
-				
+		
 		// FOR LEADERBOARD
 		Pane pane_leaderboard = new Pane();
 		Label l3 = new Label("LEADERBOARD");
@@ -200,9 +207,9 @@ public class GameMenuTrial extends Application  {
 		Image img_shield = null; Image img_magnet = null; Image img_destroy = null;
 		InputStream in_shield = null; InputStream in_magnet = null; InputStream in_destroy = null; 
 		try{
-			in_shield = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\shield.jpg"));
-			in_magnet  = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\Magnet.png"));
-			in_destroy = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\destroy.jpg"));
+			in_shield = Files.newInputStream(Paths.get("res/images/shield.jpg"));
+			in_magnet  = Files.newInputStream(Paths.get("res/images/Magnet.png"));
+			in_destroy = Files.newInputStream(Paths.get("res/images/destroy.jpg"));
 			img_shield = new Image(in_shield); img_magnet = new Image(in_magnet); img_destroy = new Image(in_destroy);
 		}finally{	
 			in_shield.close();
@@ -232,10 +239,10 @@ public class GameMenuTrial extends Application  {
 		Text t7 = new Text(s7); Text t7_ = new Text(s7_);
 		Text t2 = new Text(s2); Text t2_1 = new Text(s2_1); Text t2_2 = new Text(s2_2);
 		Text t4_ = new Text(s4_);
-		t2.setTranslateX(75); t2.setTranslateY(170); t2_1.setTranslateX(75); t2_1.setTranslateY(215); 
-		t2_2.setTranslateX(75); t2_2.setTranslateY(260); 
-		t3.setTranslateX(75); t3.setTranslateY(325); t3_.setTranslateX(75); t3_.setTranslateY(370); 
-		t4.setTranslateX(75); t4.setTranslateY(430); t4_.setTranslateX(75); t4_.setTranslateY(475);  
+		t2.setTranslateX(75); t2.setTranslateY(170); t2_1.setTranslateX(75); t2_1.setTranslateY(210); 
+		t2_2.setTranslateX(75); t2_2.setTranslateY(250); 
+		t3.setTranslateX(75); t3.setTranslateY(325); t3_.setTranslateX(75); t3_.setTranslateY(362); 
+		t4.setTranslateX(75); t4.setTranslateY(430); t4_.setTranslateX(75); t4_.setTranslateY(470);  
 		t5.setTranslateX(75); t5.setTranslateY(540);
 		t6.setTranslateX(75); t6.setTranslateY(600); t6_.setTranslateX(75); t6_.setTranslateY(640);
 		t7.setTranslateX(75); t7.setTranslateY(700); t7_.setTranslateX(75); t7_.setTranslateY(740);	
