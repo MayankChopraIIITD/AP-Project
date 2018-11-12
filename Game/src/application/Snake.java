@@ -1,5 +1,3 @@
-package application;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -20,13 +18,14 @@ class Sprite extends Circle {
 		setTranslateY(y);
 	}
 	void moveLeft(){
-		setTranslateX(getTranslateX()-15);			
+		setTranslateX(getTranslateX()-30);			
 	}
 	void moveRight(){
-		setTranslateX(getTranslateX()+15);
+		setTranslateX(getTranslateX()+30);
 	}
 	
 }
+
 public class Snake {
 	private Pane root = new Pane();
 	private Sprite player;
@@ -34,6 +33,7 @@ public class Snake {
 
 	
 	public Pane createContent(Pane root){
+		root.setPrefSize(600,800);
 		int x=15;
 		for(int i=0;i<5;i++){
 			player = new Sprite(300,600+(2*x),15,"snake",Color.BLUE);
@@ -42,8 +42,11 @@ public class Snake {
 			snake.add(player);
 		}
 		return root;
-	}	
+	}
+	
+	
 	public ArrayList<Sprite> getSnake(){
 		return snake;
 	}
+
 }
