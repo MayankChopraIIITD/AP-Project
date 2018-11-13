@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
@@ -38,6 +39,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 
@@ -136,45 +138,66 @@ public class Main extends Application {
 				scene2=new Scene(u.getRoot(),400,400);
 				boolean f1=true;
 				int direction;
-				scene2.setOnKeyReleased(qw ->{
-					switch(qw.getCode()) {
-					case LEFT:
-						
-					case RIGHT:
-						ArrayList<Circle> snl1=u.getSnakeList();		
-						for(int i=1;i<4;i++) {
-							snl1.get(i).setCenterX(snl1.get(0).getCenterX());
-							snl1.get(i).setCenterY(snl1.get(i-1).getCenterY()+20);
-						}
-					}
-					
-					
-					});
 					scene2.setOnKeyPressed(y ->{
 						ArrayList<Circle> Snakelist=u.getSnakeList();
-						
+						Rectangle r=u.getrect();
 						int snakelength=u.getLength();
 						Circle SnakeHead=Snakelist.get(Snakelist.size()-1);
 					TranslateTransition op=null;
 					TranslateTransition op2=null;
 						switch(y.getCode()) {
-						case LEFT:
-							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()-20,(int)SnakeHead.getCenterY());
-							SequentialTransition ui=new SequentialTransition();
-							for(int i=0;i<4;i++) {
-									op=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
-									op.setByX(-20);
-									op.setCycleCount(1);
-									ui.getChildren().add(op);
-							}
-							ui.play();
-							ui.setOnFinished(gh ->{
-								
+							case LEFT:
+								Timeline opi=new Timeline();
+								opi.setCycleCount(1);
+								KeyFrame apq=new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(0).centerXProperty(),Snakelist.get(0).centerXProperty().add(-20).doubleValue()),new KeyValue(Snakelist.get(1).centerXProperty(),Snakelist.get(1).centerXProperty().add(-20).doubleValue()),new KeyValue(r.yProperty(),r.yProperty().add(40).doubleValue()));
+								opi.getKeyFrames().add(apq);
+								//SequentialTransition ui=new SequentialTransition();
+								//for(int i=0;i<4;i++) {	
+									//Timeline opi=new Timeline();
+									//opi.getKeyFrames().add(new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(i).centerXProperty(),Snakelist.get(i).centerXProperty().add(-20).doubleValue())));
+									//opi.setCycleCount(1);
+									//opi.play();
+									//op=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
+										//op.setByX(-20);
+										//op.setCycleCount(1);
+										//op.play();
+										//ui.getChildren().add(op);
+							//	}
+								opi.play();
+								opi.setOnFinished(uiopy ->{
+									if(r.getY()+50>Snakelist.get(0).getCenterY()-10&&r.getX()+200>Snakelist.get(0).getCenterX()) {
+										u.getRoot().getChildren().add(new Circle(200,280,10));
+										u.getRoot().getChildren().remove(r);
+									}
+									System.out.println(Snakelist.get(0).centerXProperty().doubleValue());
+								});
+								//ui.play();
+							break;
+							case RIGHT:
+								//SequentialTransition ui2=new SequentialTransition();
+								Timeline opia=new Timeline();
+								opia.setCycleCount(1);
+								KeyFrame apqg=new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(0).centerXProperty(),Snakelist.get(0).centerXProperty().add(20).doubleValue()),new KeyValue(Snakelist.get(1).centerXProperty(),Snakelist.get(1).centerXProperty().add(20).doubleValue()));
+								opia.getKeyFrames().add(apqg);
+								//for(int i=0;i<4;i++) {
+									//opia.getKeyFrames().get(0).getValues().add(new KeyValue(Snakelist.get(i).centerXProperty(),Snakelist.get(i).centerXProperty().add(20).doubleValue()));
+									//opia.setCycleCount(1);
+									//opia.play();
+									//op2=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
+									//op2.setByX(20);
+									//op2.setCycleCount(1);
+									//ui2.getChildren().add(op2);
+								//}
+								opia.play();
+								opia.setOnFinished(uio ->{
+									System.out.println(Snakelist.get(0).centerXProperty().doubleValue());
 							});
-							for(int i=0;i<4;i++) {
-									Snakelist.get(i).setCenterX(Snakelist.get(i).getCenterX());
-									Snakelist.get(i).setCenterY(Snakelist.get(i).getCenterY());
-							}
+								break;
+								//ui2.play();
+						}
+						
+							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()-20,(int)SnakeHead.getCenterY());
+						
 							//SnakeHead.setCenterX(SnakeHead.getCenterX()-10);
 							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX(),(int)SnakeHead.getCenterY()-20);
 							//Canvas New=new Canvas(400,400);
@@ -186,22 +209,6 @@ public class Main extends Application {
 							//h.getChildren().remove(0);
 							//h.getChildren().add(New);
 							//SnakeHead=Snakelist.get(Snakelist.size()-1);
-							break;
-						case RIGHT:
-							SequentialTransition ui2=new SequentialTransition();
-							for(int i=0;i<4;i++) {
-								op2=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
-								op2.setByX(20);
-								op2.setCycleCount(1);
-								ui2.getChildren().add(op2);
-							}
-							ui2.play();
-							ui2.setOnFinished(lk ->{
-							});
-							for(int i=0;i<4;i++) {
-								Snakelist.get(i).setCenterX(Snakelist.get(i).getCenterX());
-								Snakelist.get(i).setCenterY(Snakelist.get(i).getCenterY());
-							}
 							//Canvas New2=new Canvas(400,400);
 							//GraphicsContext gc2=New2.getGraphicsContext2D();
 							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()+20,(int)SnakeHead.getCenterY());
@@ -214,11 +221,10 @@ public class Main extends Application {
 							//h.getChildren().remove(0);
 							//h.getChildren().add(New2);
 							//SnakeHead=Snakelist.get(Snakelist.size()-1);
-							break;
-					case P:
+					
 					
 						//primaryStage.show();
-					}
+				
 				});
 					//stage2.setOnShowing(k->{
 						//ArrayList<Circle> snl=u.getSnakeList();

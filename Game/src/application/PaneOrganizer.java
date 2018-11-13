@@ -20,6 +20,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -29,7 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class PaneOrganizer  {
-	private BorderPane root;
+	private Pane root;
 	//private BorderPane root;
 	private Circle snakehead;
 	private Rectangle r;
@@ -69,7 +70,7 @@ public class PaneOrganizer  {
 		//}
 		snakehead.setLayoutX(0);
 		snakehead.setLayoutY(0);
-		root=new BorderPane();
+		root=new Pane();
 		root.getChildren().add(snakehead);
 		root.getChildren().add(tail1);
 		root.getChildren().add(tail2);
@@ -82,10 +83,11 @@ public class PaneOrganizer  {
 		//Group l=new Group(snake);
 		//s1.getChildren().add(l);
 		r=new Rectangle(); 
+		r.setX(0);
 		r.setY(0);
 		r.setWidth(400);
 		r.setHeight(50);
-		r.setOpacity(0);
+		root.getChildren().add(r);
 		//sub2.getChildren().add(r);
 		//sub.getChildren().add(sub2);
 		//l1.getChildren().add(sub);
@@ -98,7 +100,7 @@ public class PaneOrganizer  {
 		//a.setCycleCount(Animation.INDEFINITE);
 		//a.play();
 	//}
-	public BorderPane getRoot() {
+	public Pane getRoot() {
 		return root;
 	}public Circle getHead() {
 		return snakehead;
@@ -113,6 +115,8 @@ public class PaneOrganizer  {
 		return gc;
 	}public int getLength() {
 		return snakelength;
+	}public Rectangle getrect() {
+		return r;
 	}
 	
 	public KeyFrame MakeNewFrame() {
