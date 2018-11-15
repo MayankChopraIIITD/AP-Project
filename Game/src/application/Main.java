@@ -35,6 +35,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -45,6 +46,10 @@ import javafx.scene.text.Font;
 
 public class Main extends Application {
 	Scene scene2;
+	Rectangle r;
+	ArrayList<Circle> Snakelist;
+	Pane root;
+	PaneOrganizer u;
 	@Override
 	public void start(Stage primaryStage) {
 			Font.loadFont(this.getClass().getResource("ARCADECLASSIC.TTF").toExternalForm(),10);
@@ -134,98 +139,118 @@ public class Main extends Application {
 				Stage stage2=new Stage();
 				stage2.initStyle(StageStyle.UNDECORATED);
 				primaryStage.close();
-				PaneOrganizer u=new PaneOrganizer();
-				scene2=new Scene(u.getRoot(),400,400);
+				u=new PaneOrganizer();
+				root=u.getRoot();
+				scene2=new Scene(root,400,400);
 				boolean f1=true;
 				int direction;
-					scene2.setOnKeyPressed(y ->{
-						ArrayList<Circle> Snakelist=u.getSnakeList();
-						Rectangle r=u.getrect();
-						int snakelength=u.getLength();
-						Circle SnakeHead=Snakelist.get(Snakelist.size()-1);
-					TranslateTransition op=null;
-					TranslateTransition op2=null;
-						switch(y.getCode()) {
-							case LEFT:
-								Timeline opi=new Timeline();
-								opi.setCycleCount(1);
-								KeyFrame apq=new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(0).centerXProperty(),Snakelist.get(0).centerXProperty().add(-20).doubleValue()),new KeyValue(Snakelist.get(1).centerXProperty(),Snakelist.get(1).centerXProperty().add(-20).doubleValue()),new KeyValue(r.yProperty(),r.yProperty().add(40).doubleValue()));
-								opi.getKeyFrames().add(apq);
-								//SequentialTransition ui=new SequentialTransition();
-								//for(int i=0;i<4;i++) {	
-									//Timeline opi=new Timeline();
-									//opi.getKeyFrames().add(new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(i).centerXProperty(),Snakelist.get(i).centerXProperty().add(-20).doubleValue())));
-									//opi.setCycleCount(1);
-									//opi.play();
-									//op=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
-										//op.setByX(-20);
-										//op.setCycleCount(1);
-										//op.play();
-										//ui.getChildren().add(op);
-							//	}
-								opi.play();
-								opi.setOnFinished(uiopy ->{
-									if(r.getY()+50>Snakelist.get(0).getCenterY()-10&&r.getX()+200>Snakelist.get(0).getCenterX()) {
-										u.getRoot().getChildren().add(new Circle(200,280,10));
-										u.getRoot().getChildren().remove(r);
-									}
-									System.out.println(Snakelist.get(0).centerXProperty().doubleValue());
-								});
-								//ui.play();
-							break;
-							case RIGHT:
-								//SequentialTransition ui2=new SequentialTransition();
-								Timeline opia=new Timeline();
-								opia.setCycleCount(1);
-								KeyFrame apqg=new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(0).centerXProperty(),Snakelist.get(0).centerXProperty().add(20).doubleValue()),new KeyValue(Snakelist.get(1).centerXProperty(),Snakelist.get(1).centerXProperty().add(20).doubleValue()));
-								opia.getKeyFrames().add(apqg);
-								//for(int i=0;i<4;i++) {
-									//opia.getKeyFrames().get(0).getValues().add(new KeyValue(Snakelist.get(i).centerXProperty(),Snakelist.get(i).centerXProperty().add(20).doubleValue()));
-									//opia.setCycleCount(1);
-									//opia.play();
-									//op2=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
-									//op2.setByX(20);
-									//op2.setCycleCount(1);
-									//ui2.getChildren().add(op2);
-								//}
-								opia.play();
-								opia.setOnFinished(uio ->{
-									System.out.println(Snakelist.get(0).centerXProperty().doubleValue());
-							});
-								break;
-								//ui2.play();
-						}
-						
-							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()-20,(int)SnakeHead.getCenterY());
-						
-							//SnakeHead.setCenterX(SnakeHead.getCenterX()-10);
-							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX(),(int)SnakeHead.getCenterY()-20);
-							//Canvas New=new Canvas(400,400);
-							//GraphicsContext gc=New.getGraphicsContext2D();
-							//for(int i=0;i<Snakelist.size();i++) {
-								//gc.fillOval(Snakelist.get(i).getCenterX(),Snakelist.get(i).getCenterY(),20,20);
-								
-							//}
-							//h.getChildren().remove(0);
-							//h.getChildren().add(New);
-							//SnakeHead=Snakelist.get(Snakelist.size()-1);
-							//Canvas New2=new Canvas(400,400);
-							//GraphicsContext gc2=New2.getGraphicsContext2D();
-							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()+20,(int)SnakeHead.getCenterY());
-							//ShiftRestSnake(Snakelist);
-							//SnakeHead=Snakelist.get(Snakelist.size()-1);
-							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX(),(int)SnakeHead.getCenterY()-20);
-							//for(int i=0;i<Snakelist.size();i++) {
-								//gc2.fillOval(Snakelist.get(i).getCenterX(),Snakelist.get(i).getCenterY(),20,20);
-							//}
-							//h.getChildren().remove(0);
-							//h.getChildren().add(New2);
-							//SnakeHead=Snakelist.get(Snakelist.size()-1);
-					
-					
-						//primaryStage.show();
-				
-				});
+					scene2.setOnKeyPressed(new abcdef());
+//						y ->{
+//						Snakelist=u.getSnakeList();
+//						r=u.getrect();
+//						int snakelength=u.getLength();
+//						Circle SnakeHead=Snakelist.get(Snakelist.size()-1);
+//					TranslateTransition op=null;
+//					TranslateTransition op2=null;
+//						
+//						switch(y.getCode()) {
+//							case LEFT:
+//								//Timeline opi=new Timeline();
+//								//opi.setCycleCount(1);
+//								//KeyFrame apq=new KeyFrame(Duration.seconds(0.025),new collisions(),new KeyValue(Snakelist.get(0).centerXProperty(),Snakelist.get(0).centerXProperty().add(-20).doubleValue()),new KeyValue(Snakelist.get(1).centerXProperty(),Snakelist.get(1).centerXProperty().add(-20).doubleValue()),new KeyValue(r.yProperty(),r.yProperty().add(40).doubleValue()));
+//								//opi.getKeyFrames().add(apq);
+//								SequentialTransition ui=new SequentialTransition();
+//								for(int i=0;i<4;i++) {	
+//									//Timeline opi=new Timeline();
+//									//opi.getKeyFrames().add(new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(i).centerXProperty(),Snakelist.get(i).centerXProperty().add(-20).doubleValue())));
+//									//opi.setCycleCount(1);
+//									//opi.play();
+//									op=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
+//									op.setByX(-20);
+//									op.setCycleCount(1);
+//									ui.getChildren().add(op);
+//								}
+//								playtrans pl=new playtrans(ui);
+//								Thread h=new Thread(pl);
+//								h.start();
+//							try {
+//								h.join();
+//							} catch (InterruptedException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+//								//opi.play();
+////								opi.setOnFinished(uiopy ->{
+////									if(r.getY()+50>Snakelist.get(0).getCenterY()-10&&r.getX()+200>Snakelist.get(0).getCenterX()) {
+////										u.getRoot().getChildren().add(new Circle(200,280,10));
+////										u.getRoot().getChildren().remove(r);
+////									}
+////									System.out.println(Snakelist.get(0).centerXProperty().doubleValue());
+////									});
+//								
+//								break;
+//							case RIGHT:
+//								SequentialTransition ui2=new SequentialTransition();
+//								//Timeline opia=new Timeline();
+//								//opia.setCycleCount(1);
+//								//KeyFrame apqg=new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(0).centerXProperty(),Snakelist.get(0).centerXProperty().add(20).doubleValue()),new KeyValue(Snakelist.get(1).centerXProperty(),Snakelist.get(1).centerXProperty().add(20).doubleValue()));
+//								//opia.getKeyFrames().add(apqg);
+//								for(int i=0;i<4;i++) {
+//									//opia.getKeyFrames().get(0).getValues().add(new KeyValue(Snakelist.get(i).centerXProperty(),Snakelist.get(i).centerXProperty().add(20).doubleValue()));
+//									//opia.setCycleCount(1);
+//									//opia.play();
+//									op2=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
+//									op2.setByX(20);
+//									op2.setCycleCount(1);
+//									ui2.getChildren().add(op2);
+//								}
+//								//opia.play();
+//								//opia.setOnFinished(uio ->{
+//									//System.out.println(Snakelist.get(0).centerXProperty().doubleValue());
+//							//});
+//								playtrans pl1=new playtrans(ui2);
+//								Thread j=new Thread(pl1);
+//								j.start();
+//							try {
+//								j.join();
+//							} catch (InterruptedException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+//								//ui2.play();
+//								break;
+//						}
+//						
+//							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()-20,(int)SnakeHead.getCenterY());
+//						
+//							//SnakeHead.setCenterX(SnakeHead.getCenterX()-10);
+//							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX(),(int)SnakeHead.getCenterY()-20);
+//							//Canvas New=new Canvas(400,400);
+//							//GraphicsContext gc=New.getGraphicsContext2D();
+//							//for(int i=0;i<Snakelist.size();i++) {
+//								//gc.fillOval(Snakelist.get(i).getCenterX(),Snakelist.get(i).getCenterY(),20,20);
+//								
+//							//}
+//							//h.getChildren().remove(0);
+//							//h.getChildren().add(New);
+//							//SnakeHead=Snakelist.get(Snakelist.size()-1);
+//							//Canvas New2=new Canvas(400,400);
+//							//GraphicsContext gc2=New2.getGraphicsContext2D();
+//							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()+20,(int)SnakeHead.getCenterY());
+//							//ShiftRestSnake(Snakelist);
+//							//SnakeHead=Snakelist.get(Snakelist.size()-1);
+//							//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX(),(int)SnakeHead.getCenterY()-20);
+//							//for(int i=0;i<Snakelist.size();i++) {
+//								//gc2.fillOval(Snakelist.get(i).getCenterX(),Snakelist.get(i).getCenterY(),20,20);
+//							//}
+//							//h.getChildren().remove(0);
+//							//h.getChildren().add(New2);
+//							//SnakeHead=Snakelist.get(Snakelist.size()-1);
+//					
+//					
+//						//primaryStage.show();
+//				
+//				});
 					//stage2.setOnShowing(k->{
 						//ArrayList<Circle> snl=u.getSnakeList();
 						//Circle snh=snl.get(snl.size()-1);
@@ -256,6 +281,126 @@ public class Main extends Application {
 	}
 	public static void main(String[] args) {
 		launch(args);
-	}   
+	}
+	class collisions implements EventHandler<ActionEvent>{
+		@Override
+		public void handle(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			if(r.getY()+50>Snakelist.get(0).getCenterY()-10) {
+				root.getChildren().remove(r);
+			}
+		}
+	}class abcdef implements EventHandler<KeyEvent>{
+
+		@Override
+		public synchronized void handle(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			Snakelist=u.getSnakeList();
+			r=u.getrect();
+			int snakelength=u.getLength();
+			Circle SnakeHead=Snakelist.get(Snakelist.size()-1);
+		TranslateTransition op=null;
+		TranslateTransition op2=null;
+			
+			switch(arg0.getCode()) {
+				case LEFT:
+					//Timeline opi=new Timeline();
+					//opi.setCycleCount(1);
+					//KeyFrame apq=new KeyFrame(Duration.seconds(0.025),new collisions(),new KeyValue(Snakelist.get(0).centerXProperty(),Snakelist.get(0).centerXProperty().add(-20).doubleValue()),new KeyValue(Snakelist.get(1).centerXProperty(),Snakelist.get(1).centerXProperty().add(-20).doubleValue()),new KeyValue(r.yProperty(),r.yProperty().add(40).doubleValue()));
+					//opi.getKeyFrames().add(apq);
+					SequentialTransition ui=new SequentialTransition();
+					for(int i=0;i<4;i++) {	
+						//Timeline opi=new Timeline();
+						//opi.getKeyFrames().add(new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(i).centerXProperty(),Snakelist.get(i).centerXProperty().add(-20).doubleValue())));
+						//opi.setCycleCount(1);
+						//opi.play();
+						op=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
+						op.setByX(-20);
+						op.setCycleCount(1);
+						ui.getChildren().add(op);
+					}
+					playtrans pl=new playtrans(ui);
+					Thread h=new Thread(pl);
+					h.start();
+				try {
+					h.join();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+					//opi.play();
+//					opi.setOnFinished(uiopy ->{
+//						if(r.getY()+50>Snakelist.get(0).getCenterY()-10&&r.getX()+200>Snakelist.get(0).getCenterX()) {
+//							u.getRoot().getChildren().add(new Circle(200,280,10));
+//							u.getRoot().getChildren().remove(r);
+//						}
+//						System.out.println(Snakelist.get(0).centerXProperty().doubleValue());
+//						});
+					
+					break;
+				case RIGHT:
+					SequentialTransition ui2=new SequentialTransition();
+					//Timeline opia=new Timeline();
+					//opia.setCycleCount(1);
+					//KeyFrame apqg=new KeyFrame(Duration.seconds(0.025),new KeyValue(Snakelist.get(0).centerXProperty(),Snakelist.get(0).centerXProperty().add(20).doubleValue()),new KeyValue(Snakelist.get(1).centerXProperty(),Snakelist.get(1).centerXProperty().add(20).doubleValue()));
+					//opia.getKeyFrames().add(apqg);
+					for(int i=0;i<4;i++) {
+						//opia.getKeyFrames().get(0).getValues().add(new KeyValue(Snakelist.get(i).centerXProperty(),Snakelist.get(i).centerXProperty().add(20).doubleValue()));
+						//opia.setCycleCount(1);
+						//opia.play();
+						op2=new TranslateTransition(Duration.seconds(0.025),Snakelist.get(i));
+						op2.setByX(20);
+						op2.setCycleCount(1);
+						ui2.getChildren().add(op2);
+					}
+					//opia.play();
+					//opia.setOnFinished(uio ->{
+						//System.out.println(Snakelist.get(0).centerXProperty().doubleValue());
+				//});
+					playtrans pl1=new playtrans(ui2);
+					Thread j=new Thread(pl1);
+					j.start();
+				try {
+					j.join();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+					//ui2.play();
+					break;
+			}
+			
+				//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()-20,(int)SnakeHead.getCenterY());
+			
+				//SnakeHead.setCenterX(SnakeHead.getCenterX()-10);
+				//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX(),(int)SnakeHead.getCenterY()-20);
+				//Canvas New=new Canvas(400,400);
+				//GraphicsContext gc=New.getGraphicsContext2D();
+				//for(int i=0;i<Snakelist.size();i++) {
+					//gc.fillOval(Snakelist.get(i).getCenterX(),Snakelist.get(i).getCenterY(),20,20);
+					
+				//}
+				//h.getChildren().remove(0);
+				//h.getChildren().add(New);
+				//SnakeHead=Snakelist.get(Snakelist.size()-1);
+				//Canvas New2=new Canvas(400,400);
+				//GraphicsContext gc2=New2.getGraphicsContext2D();
+				//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX()+20,(int)SnakeHead.getCenterY());
+				//ShiftRestSnake(Snakelist);
+				//SnakeHead=Snakelist.get(Snakelist.size()-1);
+				//ShiftSnake(Snakelist,snakelength,(int)SnakeHead.getCenterX(),(int)SnakeHead.getCenterY()-20);
+				//for(int i=0;i<Snakelist.size();i++) {
+					//gc2.fillOval(Snakelist.get(i).getCenterX(),Snakelist.get(i).getCenterY(),20,20);
+				//}
+				//h.getChildren().remove(0);
+				//h.getChildren().add(New2);
+				//SnakeHead=Snakelist.get(Snakelist.size()-1);
+		
+		
+			//primaryStage.show();
+	
+		}
+		
+	}
 
 }

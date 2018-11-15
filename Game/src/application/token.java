@@ -1,4 +1,7 @@
-import java.util.*;
+package application;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public abstract class token {
 	private ArrayList<Integer> arr_x;
@@ -22,5 +25,8 @@ public abstract class token {
 		y_cor = -700+num.nextInt(300);
 		return y_cor;
 	}
+	
+	
+	
 	
 }
