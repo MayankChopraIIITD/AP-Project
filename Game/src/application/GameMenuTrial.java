@@ -1,3 +1,4 @@
+package application;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ class playTimeline implements Runnable{
 }
 
 public class GameMenuTrial extends Application  {
-	
+	private boolean paused=false;
 	private Pane root;
 	private Pane pane_game = new Pane();
 	private Scene scene_main, scene_instructions,scene_leaderboard,scene_newgame;
@@ -98,6 +99,8 @@ public class GameMenuTrial extends Application  {
 	private ArrayList<Sprite> snake_list = new ArrayList<>();
 	private ArrayList<Group> block_list_2 = new ArrayList<>();
 	private ArrayList<Group> ball_list_2 = new ArrayList<>();
+	private ArrayList<TranslateTransition> blocks;
+	private ArrayList<TranslateTransition> balls;
 	private Snake snake;
 	private Text Score=new Text("0");
 	private int num_blocks = 0;
@@ -117,7 +120,17 @@ public class GameMenuTrial extends Application  {
 				block_list.add(rect.generate_blocks(i));
 				block_list_2.add(rect.generate_blocks(i));
 			}
-			Animate_blocks(block_list_2,num_blocks);
+			blocks=Animate_blocks(block_list_2,num_blocks);
+			if(!paused) {
+				for(int u=0;u<blocks.size();u++) {
+					blocks.get(u).play();
+				}
+			}else {
+				for(int u=0;u<blocks.size();u++) {
+					blocks.get(u).pause();
+				}
+			}
+			
 			for(int i=num_blocks;i<block_list_2.size();i++){
 				pane_game.getChildren().add(block_list_2.get(i));
 			}
@@ -135,7 +148,10 @@ public class GameMenuTrial extends Application  {
 				ball_list.add(ball.createball());
 				ball_list_2.add(ball.createball());
 			}
-			Animate_balls(ball_list_2,num_balls);
+			balls=Animate_balls(ball_list_2,num_balls);
+			for(int o=0;o<balls.size();o++) {
+				balls.get(o).play();
+			}
 			for(int i=num_balls;i<ball_list_2.size();i++){
 				pane_game.getChildren().add(ball_list_2.get(i));
 			}
@@ -192,24 +208,30 @@ public class GameMenuTrial extends Application  {
 		}
 	}
 	
-	public void Animate_blocks(ArrayList<Group> list, int num){
+	public ArrayList<TranslateTransition> Animate_blocks(ArrayList<Group> list, int num){
+		ArrayList<TranslateTransition> l=new ArrayList<>();
 		TranslateTransition a;
 		for(int i=num;i<list.size();i++) {
 			a=new TranslateTransition(Duration.millis(5000));
 			a.setByY(1750);
 			a.setNode(list.get(i));
-			a.play();
+			l.add(a);
+//			a.play();
 		}
+		return l;
 	}
 	
-	public void Animate_balls(ArrayList<Group> list, int num){
+	public ArrayList<TranslateTransition> Animate_balls(ArrayList<Group> list, int num){
+		ArrayList<TranslateTransition> l=new ArrayList<>();
 		TranslateTransition a;
 		for(int i=num;i<list.size();i++){
 			a = new TranslateTransition(Duration.millis(5000));
 			a.setByY(1750);
 			a.setNode(list.get(i));
-			a.play();
+			l.add(a);
+//			a.play();
 		}
+		return l;
 	}
 	
 	public ArrayList<Group> get_ball_list(int num){
@@ -247,7 +269,7 @@ public class GameMenuTrial extends Application  {
 		Image img = null;
 		InputStream in = null;
 		try{
-			in = Files.newInputStream(Paths.get("res/images/snake2.jpg"));	
+			in = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\snake2.jpg"));	
 			img = new Image(in);
 		}finally{	
 			in.close();
@@ -294,7 +316,7 @@ public class GameMenuTrial extends Application  {
 		Image img2 = null;
 		InputStream in2 = null;
 		try{
-			in2 = Files.newInputStream(Paths.get("res/images/black.jpg"));	
+			in2 = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\black.jpg"));	
 			img2 = new Image(in2);
 		}finally{	
 			in2.close();
@@ -367,19 +389,48 @@ public class GameMenuTrial extends Application  {
 			scene_newgame.setOnKeyPressed(e -> {
 				switch (e.getCode()){
 					case A:
-						for(int i=0;i<snake_list.size();i++){
-							snake_list.get(i).moveLeft();
-							snake.getlen().setX(snake_list.get(0).getTranslateX()-8);
+						if(!paused) {
+							for(int i=0;i<snake_list.size();i++){
+								snake_list.get(i).moveLeft();
+								snake.getlen().setX(snake_list.get(0).getTranslateX()-8);
+							}
 						}
 						break;
 					case D:
-						for(int i=0;i<snake_list.size();i++){
-							snake_list.get(i).moveRight();
-							snake.getlen().setX(snake_list.get(0).getTranslateX()-5);
+						if(!paused) {
+							for(int i=0;i<snake_list.size();i++){
+								snake_list.get(i).moveRight();
+								snake.getlen().setX(snake_list.get(0).getTranslateX()-5);
+							}
 						}
 						break;		
-					default:
-							
+					case P:
+						paused=true;
+						for(int i=0;i<blocks.size();i++) {
+							blocks.get(i).pause();
+						}
+						for(int i=0;i<balls.size();i++) {
+							balls.get(i).pause();
+						}
+						t.pause();
+						t_balls_1.pause();
+						t2.pause();
+						t_balls_2.pause();
+							break;
+					case R:
+						paused=false;
+						
+						for(int i=0;i<blocks.size();i++) {
+							blocks.get(i).play();
+						}
+						for(int i=0;i<balls.size();i++) {
+							balls.get(i).play();
+						}
+						t.play();
+						t_balls_1.play();
+						t2.play();
+						t_balls_2.play();
+							break;
 //					default:
 ////						t.stop();
 ////						t_balls_1.stop();
@@ -480,9 +531,9 @@ public class GameMenuTrial extends Application  {
 		Image img_shield = null; Image img_magnet = null; Image img_destroy = null;
 		InputStream in_shield = null; InputStream in_magnet = null; InputStream in_destroy = null; 
 		try{
-			in_shield = Files.newInputStream(Paths.get("res/images/shield.jpg"));
-			in_magnet  = Files.newInputStream(Paths.get("res/images/Magnet.png"));
-			in_destroy = Files.newInputStream(Paths.get("res/images/destroy.jpg"));
+			in_shield = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\shield.jpg"));
+			in_magnet  = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\Magnet.png"));
+			in_destroy = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\destroy.jpg"));
 			img_shield = new Image(in_shield); img_magnet = new Image(in_magnet); img_destroy = new Image(in_destroy);
 		}finally{	
 			in_shield.close();
