@@ -1,4 +1,3 @@
-package application;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -73,6 +72,19 @@ class MenuButton extends StackPane{
 	}	
 }
 
+class playTimeline implements Runnable{
+	private Timeline t;
+	
+	public playTimeline(Timeline t){
+		this.t = t;
+	}
+	
+	@Override
+	public void run(){
+		t.play();
+	}
+	
+}
 
 public class GameMenuTrial extends Application  {
 	
@@ -88,6 +100,8 @@ public class GameMenuTrial extends Application  {
 	private ArrayList<Group> ball_list_2 = new ArrayList<>();
 	private Snake snake;
 	private Text Score=new Text("0");
+	private int num_blocks = 0;
+	private int num_balls = 0;
 	private Text Score_name=new Text("Score:");
 	public GameMenuTrial(){
 		root = new Pane();
@@ -97,13 +111,14 @@ public class GameMenuTrial extends Application  {
 		@Override
 		public void handle(ActionEvent event){
 			block_list = new ArrayList<>();
-			int num = block_list_2.size();
+//			int num = block_list_2.size();
+			num_blocks = block_list_2.size();
 			for(int i=0;i<5;i++){
 				block_list.add(rect.generate_blocks(i));
 				block_list_2.add(rect.generate_blocks(i));
 			}
-			Animate_blocks(block_list_2,num);
-			for(int i=num;i<block_list_2.size();i++){
+			Animate_blocks(block_list_2,num_blocks);
+			for(int i=num_blocks;i<block_list_2.size();i++){
 				pane_game.getChildren().add(block_list_2.get(i));
 			}
 		}
@@ -113,14 +128,15 @@ public class GameMenuTrial extends Application  {
 		public void handle(ActionEvent event){
 			ball_list = new ArrayList<>();
 			Random r = new Random();
-			int num_balls = r.nextInt(4)+1;
-			int num = ball_list_2.size();
-			for(int i=0;i<num_balls;i++){
+			int num_balls_random = r.nextInt(4)+1;
+//			int num = ball_list_2.size();
+			num_balls = ball_list_2.size();
+			for(int i=0;i<num_balls_random;i++){
 				ball_list.add(ball.createball());
 				ball_list_2.add(ball.createball());
 			}
-			Animate_balls(ball_list_2,num);
-			for(int i=num-1;i<ball_list_2.size();i++){
+			Animate_balls(ball_list_2,num_balls);
+			for(int i=num_balls;i<ball_list_2.size();i++){
 				pane_game.getChildren().add(ball_list_2.get(i));
 			}
 		}
@@ -170,6 +186,7 @@ public class GameMenuTrial extends Application  {
 						index=snake_list.size()-1;
 				}
 					snake.getlen().setText(Integer.toString(Integer.parseInt(snake.getlen().getText())+h));
+					
 				}
 			}
 		}
@@ -178,7 +195,7 @@ public class GameMenuTrial extends Application  {
 	public void Animate_blocks(ArrayList<Group> list, int num){
 		TranslateTransition a;
 		for(int i=num;i<list.size();i++) {
-			a=new TranslateTransition(Duration.millis(4000));
+			a=new TranslateTransition(Duration.millis(5000));
 			a.setByY(1750);
 			a.setNode(list.get(i));
 			a.play();
@@ -188,7 +205,7 @@ public class GameMenuTrial extends Application  {
 	public void Animate_balls(ArrayList<Group> list, int num){
 		TranslateTransition a;
 		for(int i=num;i<list.size();i++){
-			a = new TranslateTransition(Duration.millis(4000));
+			a = new TranslateTransition(Duration.millis(5000));
 			a.setByY(1750);
 			a.setNode(list.get(i));
 			a.play();
@@ -205,7 +222,7 @@ public class GameMenuTrial extends Application  {
 	
 	public ArrayList<Group> get_block_list(){
 		Random k=new Random();
-		int g=k.nextInt(5);
+		int g=k.nextInt(5)+num_blocks;
 		for(int i=0;i<5;i++){
 			block_list.add(rect.generate_blocks(i));
 		}
@@ -213,10 +230,11 @@ public class GameMenuTrial extends Application  {
 		Text j=(Text)block_list.get(g).getChildren().get(1);
 		j.setText(Integer.toString(u));
 		return block_list;
+		
 	}
 	
 	@Override
-	public void start(Stage stage) throws Exception{
+	public void start(Stage stage) throws Exception,InterruptedException{
 		stage.initStyle(StageStyle.UNDECORATED);
 		root.setPrefSize(800,800);
 		
@@ -229,7 +247,7 @@ public class GameMenuTrial extends Application  {
 		Image img = null;
 		InputStream in = null;
 		try{
-			in = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\snake2.jpg"));	
+			in = Files.newInputStream(Paths.get("res/images/snake2.jpg"));	
 			img = new Image(in);
 		}finally{	
 			in.close();
@@ -276,7 +294,7 @@ public class GameMenuTrial extends Application  {
 		Image img2 = null;
 		InputStream in2 = null;
 		try{
-			in2 = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\black.jpg"));	
+			in2 = Files.newInputStream(Paths.get("res/images/black.jpg"));	
 			img2 = new Image(in2);
 		}finally{	
 			in2.close();
@@ -299,9 +317,9 @@ public class GameMenuTrial extends Application  {
 		snake_list = snake.getSnake();
 
 		btn2.setOnMouseClicked(event -> {
-			KeyFrame frame = new KeyFrame(Duration.millis(4000),new Timehandler1());
-			KeyFrame frame_balls_1 = new KeyFrame(Duration.millis(4000),new Timehandler_balls_1());
-			KeyFrame frame2 = new KeyFrame(Duration.millis(1000),new Timehandler2());
+			KeyFrame frame = new KeyFrame(Duration.millis(5000),new Timehandler1());
+			KeyFrame frame_balls_1 = new KeyFrame(Duration.millis(5000),new Timehandler_balls_1());
+			KeyFrame frame2 = new KeyFrame(Duration.millis(1250),new Timehandler2());
 			KeyFrame frame_balls_2  = new KeyFrame(Duration.millis(100),new Timehandler_balls_2());
 			
 			Timeline t = new Timeline(frame);
@@ -313,6 +331,32 @@ public class GameMenuTrial extends Application  {
 			Timeline t_balls_2 = new Timeline(frame_balls_2);
 			t2.setCycleCount(Timeline.INDEFINITE);
 			t_balls_2.setCycleCount(Timeline.INDEFINITE);
+			
+//			playTimeline p_block = new playTimeline(t);
+//			playTimeline p_balls = new playTimeline(t_balls_1);
+//			playTimeline p_block_collide = new playTimeline(t2);
+//			playTimeline p_balls_collide = new playTimeline(t_balls_2);
+//			
+//			Thread thread1 = new Thread(p_block);
+//			Thread thread2 = new Thread(p_balls);
+//			Thread thread3 = new Thread(p_block_collide);
+//			Thread thread4 = new Thread(p_balls_collide);
+//			
+//			thread1.start();
+//			thread2.start();
+//			thread3.start();
+//			thread4.start();
+//			
+//			try {
+//				thread1.join();
+//				thread2.join();
+//				thread3.join();
+//				thread4.join();
+//			} catch (Exception e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+			
 			
 			t.play();
 			t_balls_1.play();
@@ -333,56 +377,64 @@ public class GameMenuTrial extends Application  {
 							snake_list.get(i).moveRight();
 							snake.getlen().setX(snake_list.get(0).getTranslateX()-5);
 						}
-						break;				
+						break;		
 					default:
-						t.pause();
-						t_balls_1.pause();
-						t2.pause();
-						t_balls_2.pause();
-						Stage paused=new Stage();
-						paused.initModality(Modality.APPLICATION_MODAL);
-						paused.initStyle(StageStyle.UNDECORATED);
-						paused.initOwner(stage);
-						VBox h=new VBox();
-						StackPane st=new StackPane();
-						StackPane st2=new StackPane();
-						StackPane st3=new StackPane();
-						StackPane st4=new StackPane();
-						Button res=new Button("Resume");
-						Button back=new Button("Back");
-						Button exit=new Button("Exit");
-						st.getChildren().add(res);
-						st2.getChildren().add(back);
-						st3.getChildren().add(exit);
-						h.getChildren().add(st);
-						h.getChildren().add(st2);
-						h.getChildren().add(st3);
-						st4.getChildren().add(h);
-						Scene pauseds=new Scene(st4,200,300);
-						paused.setX(500);
-						paused.setY(200);
-						res.setOnAction(resume ->{
-							t.play();
-							t_balls_1.play();
-							t2.play();
-							t_balls_2.play();
-							paused.close();
-						});
-						back.setOnAction(backed ->{
-							t.stop();
-							t_balls_1.stop();
-							t2.stop();
-							t_balls_2.stop();
-							stage.setScene(scene_main);
-							paused.close();
-						});
-						exit.setOnAction(exited ->{
-							System.exit(0);
-							paused.close();
-						});
-						paused.setScene(pauseds);
-						paused.show();
+							
+//					default:
+////						t.stop();
+////						t_balls_1.stop();
+////						t2.stop();
+////						t_balls_2.stop();
+//						t.pause();
+//						t_balls_1.pause();
+//						t2.pause();
+//						t_balls_2.pause();
+//						Stage paused=new Stage();
+//						paused.initModality(Modality.APPLICATION_MODAL);
+//						paused.initStyle(StageStyle.UNDECORATED);
+//						paused.initOwner(stage);
+//						VBox h=new VBox();
+//						StackPane st=new StackPane();
+//						StackPane st2=new StackPane();
+//						StackPane st3=new StackPane();
+//						StackPane st4=new StackPane();
+//						Button res=new Button("Resume");
+//						Button back=new Button("Back");
+//						Button exit=new Button("Exit");
+//						st.getChildren().add(res);
+//						st2.getChildren().add(back);
+//						st3.getChildren().add(exit);
+//						h.getChildren().add(st);
+//						h.getChildren().add(st2);
+//						h.getChildren().add(st3);
+//						st4.getChildren().add(h);
+//						Scene pauseds=new Scene(st4,200,300);
+//						paused.setX(500);
+//						paused.setY(200);
+//						res.setOnAction(resume ->{
+//							t.play();
+//							t_balls_1.play();
+//							t2.play();
+//							t_balls_2.play();
+//							paused.close();
+//						});
+//						back.setOnAction(backed ->{
+//							t.stop();
+//							t_balls_1.stop();
+//							t2.stop();
+//							t_balls_2.stop();
+//							stage.setScene(scene_main);
+//							paused.close();
+//						});
+//						exit.setOnAction(exited ->{
+//							System.exit(0);
+//							paused.close();
+//						});
+//						paused.setScene(pauseds);
+//						paused.show();
+//						break;
 				}
+				
 			});
 			stage.setScene(scene_newgame);	
 			stage.show();
@@ -428,9 +480,9 @@ public class GameMenuTrial extends Application  {
 		Image img_shield = null; Image img_magnet = null; Image img_destroy = null;
 		InputStream in_shield = null; InputStream in_magnet = null; InputStream in_destroy = null; 
 		try{
-			in_shield = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\shield.jpg"));
-			in_magnet  = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\Magnet.png"));
-			in_destroy = Files.newInputStream(Paths.get("D:\\eclipse-workspace\\Game\\src\\application\\destroy.jpg"));
+			in_shield = Files.newInputStream(Paths.get("res/images/shield.jpg"));
+			in_magnet  = Files.newInputStream(Paths.get("res/images/Magnet.png"));
+			in_destroy = Files.newInputStream(Paths.get("res/images/destroy.jpg"));
 			img_shield = new Image(in_shield); img_magnet = new Image(in_magnet); img_destroy = new Image(in_destroy);
 		}finally{	
 			in_shield.close();
