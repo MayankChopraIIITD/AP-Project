@@ -528,6 +528,7 @@ public class GameMenuTrial extends Application  {
 //						break;
 					case K:
 						ObjectOutputStream o=null;
+						System.out.println(snake_list.size());
 						try {
 							o=new ObjectOutputStream(new FileOutputStream("D:\\eclipse-workspace\\Game\\src\\application\\d.txt"));
 							int[] p=new int[2];
@@ -686,7 +687,7 @@ public class GameMenuTrial extends Application  {
 			t2.play();
 			t_balls_2.play();
 			
-			scene_resgame = new Scene(snake.createContent(pane_game_1));
+			scene_resgame = new Scene(snake.createContentres(pane_game_1,player[0]));
 			snake.getlen().setText(Integer.toString(player[0]));
 			scene_resgame.setOnKeyPressed(e -> {
 				switch (e.getCode()){

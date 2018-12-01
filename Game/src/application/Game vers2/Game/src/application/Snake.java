@@ -13,9 +13,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 import javafx.geometry.Point2D;
+
+import java.io.Serializable;
 import java.util.*;
 
-class Sprite extends Circle {
+class Sprite extends Circle implements Serializable {
 	boolean dead = false;
 	final String type;
 	Sprite(int x,int y,int r, String type,Color color){
@@ -32,7 +34,7 @@ class Sprite extends Circle {
 	}
 }
 
-public class Snake {
+public class Snake implements Serializable {
 	private Pane root = new Pane();
 	private Sprite player;
 	private ArrayList<Sprite> snake = new ArrayList<>();
@@ -67,35 +69,23 @@ public class Snake {
 				snake.add(player);
 			}
 		}
-		
-		
-		
 		return root;
-	}void moveleft(boolean keyr){
-		if(keyr) {
-			SequentialTransition a=new SequentialTransition();
-			for(int i=0;i<snake.size();i++) {
-				TranslateTransition o=new TranslateTransition(Duration.seconds(0.025),snake.get(i));
-				o.setByX(-30);
-				o.setCycleCount(1);
-				a.getChildren().add(o);
-			}
-			a.play();
+	}public Pane createContentres(Pane root,int length) {
+		root.setPrefSize(600,800);
+		int x=15;
+		for(int i=0;i<length+1;i++){
+			Sprite p = new Sprite(300,600+(2*x),15,"snake",Color.BLUE);
+			root.getChildren().add(p);
+			x = x+15;
+			snake.add(p);
 		}
-	}void moveright(boolean keyr){
-		if(keyr) {
-			SequentialTransition a=new SequentialTransition();
-			for(int i=0;i<snake.size();i++) {
-				TranslateTransition o=new TranslateTransition(Duration.seconds(0.025),snake.get(i));
-				o.setByX(30);
-				o.setCycleCount(1);
-				a.getChildren().add(o);
-			}
-			a.play();
-		}
+		len=new Text(Integer.toString(snake.size()));
+		len.setFont(new Font(20));
+		len.setX(snake.get(0).getTranslateX()-5);
+		len.setY(snake.get(0).getTranslateY());
+		root.getChildren().add(len);
+		return root;
 	}
-	
-	
 	public ArrayList<Sprite> getSnake(){
 		return snake;
 	}
