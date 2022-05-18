@@ -1,5 +1,4 @@
 # AP-Project
-Tryharding to make something ! :D
 
 Snakes vs Blocks: A game made exclusively on JAVA
 
